@@ -1,17 +1,27 @@
 CC=gcc
+BUILD_FOLDER := build
 
-exe = server client1 client2 client
+all : $(addprefix $(BUILD_FOLDER)/,server client client_response_no_bind) multi_clients
 
-all : $(exe)
+$(BUILD_FOLDER)/server: dgramInit.c
+	$(CC) -DSERVER $^ -o $@
 
-server: dgramInit.c
-	$(CC) -DSERVER $^ -o build/$@
+multi_clients: $(addprefix $(BUILD_FOLDER)/,client1 client2)
 
-client1: dgramInit.c
-	$(CC) -DCLIENT1 $^ -o build/$@
+$(BUILD_FOLDER)/client1: dgramInit.c
+	$(CC) -DCLIENT1 $^ -o $@
 
-client2: dgramInit.c
-	$(CC) -DCLIENT2 $^ -o build/$@
+$(BUILD_FOLDER)/client2: dgramInit.c
+	$(CC) -DCLIENT2 $^ -o $@
 
-client: dgramInit.c
-	$(CC) -DCLIENT $^ -o build/$@
+$(BUILD_FOLDER)/client: dgramInit.c
+	$(CC) -DCLIENT $^ -o $@
+
+$(BUILD_FOLDER)/client_response_no_bind: dgramInit.c
+	$(CC) -DCLIENT_NO_BIND $^ -o $@
+
+$(BUILD_FOLDER):
+	mkdir -p build/
+
+clean :
+	rm build/*
