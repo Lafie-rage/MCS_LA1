@@ -28,7 +28,7 @@ Arg ......... : *chaine  : pointeur vers la chaine à remplir
 		        longueur : longeur de la chaîne
 Return....... : int
 ********************************************************/
-int read(char *chaine, int longueur)
+int custom_read(char *chaine, int longueur)
 {
     char *positionEntree = NULL;
     if (fgets(chaine, longueur, stdin) != NULL){
