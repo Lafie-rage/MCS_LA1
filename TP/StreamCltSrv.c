@@ -119,7 +119,7 @@ void dialClt2srv(int socketAppel) {
 		printf ("tapez votre message : \n"); fflush(stdout);
 		//scanf("%[^ ]", buff);
 		//gets(buff);
-		read(buff,MAX_BUFF);
+		custom_read(buff,MAX_BUFF);
 		envoyerMessage(socketAppel, buff) ;
 		recevoirMessage(socketAppel, buff, MAX_BUFF) ;
 	} while (strcmp(buff,"BYE")!=0) ;

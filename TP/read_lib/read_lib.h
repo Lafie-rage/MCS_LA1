@@ -1,3 +1,3 @@
 #include <stdio.h>
 #include <string.h>
-int read(char *chaine, int longueur);
+int custom_read(char *chaine, int longueur);
