@@ -11,6 +11,7 @@
 #include <arpa/inet.h>
 
 #include "session.h"
+#include "read_lib/read_lib.h"
 
 #define CHECK(sts, msg) if ((sts)==-1) {perror(msg); exit(-1);}
 #define PAUSE(msg)	printf("%s [Appuyez sur entrée pour continuer]", msg); getchar();
@@ -117,7 +118,8 @@ void dialClt2srv(int socketAppel) {
 		memset(buff, 0, MAX_BUFF);
 		printf ("tapez votre message : \n"); fflush(stdout);
 		//scanf("%[^ ]", buff);
-		gets(buff);
+		//gets(buff);
+		read(buff,MAX_BUFF);
 		envoyerMessage(socketAppel, buff) ;
 		recevoirMessage(socketAppel, buff, MAX_BUFF) ;
 	} while (strcmp(buff,"BYE")!=0) ;

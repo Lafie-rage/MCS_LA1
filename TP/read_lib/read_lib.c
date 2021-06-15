@@ -12,7 +12,7 @@ Role ........ : vider le buffer
 Arg ......... : 
 Return....... : VOID
 ********************************************************/
-void viderBuffer()
+void flushBuffer()
 {
     int c = 0;
     while (c != '\n' && c != EOF)
@@ -28,7 +28,7 @@ Arg ......... : *chaine  : pointeur vers la chaine à remplir
 		        longueur : longeur de la chaîne
 Return....... : int
 ********************************************************/
-int lire(char *chaine, int longueur)
+int read(char *chaine, int longueur)
 {
     char *positionEntree = NULL;
     if (fgets(chaine, longueur, stdin) != NULL){
@@ -37,12 +37,12 @@ int lire(char *chaine, int longueur)
             *positionEntree = '\0';
         }
         else{
-            viderBuffer();
+            flushBuffer();
         }
         return 1;
     }
     else{
-        viderBuffer();
+        flushBuffer();
         return 0;
     }
 }
