@@ -1,4 +1,4 @@
-CC=gcc -Wall
+CC=gcc -Wall -Wextra
 SERVER_DEFINE=-DSERVER
 CLIENT_DEFINE=-DCLIENT
 LIB_FOLDER=lib/

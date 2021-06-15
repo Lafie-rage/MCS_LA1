@@ -1,15 +1,6 @@
 #ifndef DATA_H
 #define DATA_H
-#include "session.h"
-
-/**
- *	\def	MAX_BUFF	taille maximale d'une chaine échangée
- */
-#define MAX_BUFF	1024
-/**
- *	\typedef	buffer_t	: chaîne de caractères utilisée pour l'émission/réception
- */
-typedef char buffer_t[MAX_BUFF];
+#include "reqRep.h"
 
 /**
 *	\fn		void str2req(buffer_t buffer, requete_t *req)
@@ -25,7 +16,7 @@ void str2req(buffer_t buffer, requete_t *req);
 *	\param	socketEchange : socket d'échange à utiliser pour l'envoi
 *	\param	req : requête à sérialiser avant envoi
 */
-void envoyerRequete(int socketEchange, requete_t req)
+void envoyerRequete(int socketEchange, requete_t req);
 
 /**
 *	\fn		void recevoirRequete(int socketEchange, requete_t *req)
@@ -33,6 +24,6 @@ void envoyerRequete(int socketEchange, requete_t req)
 *	\param	socketEchange : socket d'échange à utiliser pour la réception
 *	\param	req : requête reçue après désérialisation du buufer
 */
-void recevoirRequete(int socketEchange, requete_t *req)
+void recevoirRequete(int socketEchange, requete_t *req);
 
 #endif /* DATA_H */

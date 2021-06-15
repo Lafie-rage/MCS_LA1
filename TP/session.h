@@ -2,7 +2,6 @@
 #define SESSION_H
 
 #include "data.h"
-#include "reqRep.h"
 /**
 *	\fn		creerSocketEcoute (char *adrIP, short port)
 *	\brief	Création d'une socket d'écoute avec l'adressage fourni en paramètre
