@@ -53,7 +53,7 @@ int main (int c, char **v) {
 	return 0;
 }
 
-void creerProcService(int sockEcoute, int sockDial) {
+void creerProcService(int sockEcoute, int sockDial) { // TODO : A déplacer dans proto.c
 	int pid;
 
 	// Créer un processus de service pour l'affecter au service du client connecté
@@ -101,25 +101,30 @@ void client (char *adrIP, int port) {
 	//PAUSE("CLIENT-close()");
 }
 
-void dialSrv2Clt(int socketDial){
+
+void dialSrv2Clt(int socketDial){ // TODO : A déplacer dans proto.c
 	char buff[MAX_BUFF];
 
 	do {
 		memset(buff, 0, MAX_BUFF);
 		recevoirMessage(socketDial, buff, MAX_BUFF) ;
-		if (strcmp(buff,"bye")==0) envoyerMessage(socketDial, BYE) ;
+		// appeler une fct avec le param buff pour connaître le numero de requete reçue
+		// on réalise un switch sur ce numéro : à charque numéro correspond une fonction
+		// de traitement qui génére un réponse
+		// cette réponse sera envoyer après serialization
+		if (strcmp(buff,"/bye")==0) envoyerMessage(socketDial, BYE) ;
 		else envoyerMessage(socketDial, OK) ;
-	} while (strcmp(buff,"bye")!=0);
+	} while (strcmp(buff,"/bye")!=0);
 }
-void dialClt2srv(int socketAppel) {
+void dialClt2srv(int socketAppel) { // TODO : A déplacer dans proto.c
 	char buff[MAX_BUFF];
 
 	do {
 		memset(buff, 0, MAX_BUFF);
 		printf ("tapez votre message : \n"); fflush(stdout);
-		//scanf("%[^ ]", buff);
+		scanf("%[^ ]\n", buff);
 		//gets(buff);
-		custom_read(buff,MAX_BUFF);
+		//custom_read(buff,MAX_BUFF);
 		envoyerMessage(socketAppel, buff) ;
 		recevoirMessage(socketAppel, buff, MAX_BUFF) ;
 	} while (strcmp(buff,"BYE")!=0) ;
@@ -138,6 +143,7 @@ void deroute (int sigNum) {
 			break;
 	}
 }
+
 void installSigServer(int sigNum) {
 	struct sigaction newAct;
 
