@@ -29,8 +29,7 @@
  */
 typedef char buffer_t[MAX_BUFF];
 
-#include "session.h" // Potentiellement
-// Définit ici puisqu'on utilise buffer_t dans reqRep et que data utilise une structure de reqRep
+#include "session.h"
 #include "reqRep.h"
 
 /**

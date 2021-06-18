@@ -6,7 +6,7 @@
 #define PROTO_H
 
 #include <stdlib.h>
-#include "data.h" // Potentiellement
+#include "data.h"
 #include "reqRep.h"
 
 
