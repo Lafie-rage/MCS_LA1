@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdio.h>
 #include "data.h"
 #include "session.h"
 
@@ -12,7 +13,7 @@
 *	\param	req : requête à sérialiser
 */
 void req2str(const requete_t *req, buffer_t buffer) {
-	sprintf(buff, FMT_REQ_SERIALIZE_SEND, req->reqNum, req->reqSizeBuff, req->reqBuff);
+	sprintf(buffer, FMT_REQ_SERIAL_SEND, req->reqNum, req->reqSizeBuff, req->reqBuff);
 }
 
 /**
@@ -22,7 +23,7 @@ void req2str(const requete_t *req, buffer_t buffer) {
 *	\param	req : requête à sérialiser
 */
 void str2req(const buffer_t buffer, requete_t *req) {
-	sscanf(buff, FMT_REQ_SERIALIZE_RECV, req->reqNum, req->reqSizeBuff, req->reqBuff);
+	sscanf(buffer, FMT_REQ_SERIAL_RECV, &(req->reqNum), &(req->reqSizeBuff), req->reqBuff);
 }
 
 /**
@@ -42,9 +43,9 @@ void envoyerRequete(int socketEchange, buffer_t input) {
 	// et aussi le(s) caractère(s) definissant qu'un texte n'est plus un message mais une commande
 	// Ici, on a prit '/' mais ça peut-être n'importe quoi d'autre
 	if(input[0]== '/') { // CMD
-		if (strcmp(buff,"/bye")==0) req.reqNum = 1;
-		else if (strcmp(buff,"/list")==0) req.reqNum = 2;
-		else 	if (strcmp(buff,"/talk")==0) req.reqNum = 3;
+		if (strcmp(buffer,"/bye")==0) req.reqNum = 1;
+		else if (strcmp(buffer,"/list")==0) req.reqNum = 2;
+		else 	if (strcmp(buffer,"/talk")==0) req.reqNum = 3;
 		// etc...
 	}
 	else req.reqNum = 0; // MSG
