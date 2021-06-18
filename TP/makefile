@@ -13,9 +13,16 @@ server: StreamCltSrv.c $(LIB_FOLDER)libmcs.a $(LIB_FOLDER)libread.a $(BUILD_FOLD
 client: StreamCltSrv.c $(LIB_FOLDER)libmcs.a $(LIB_FOLDER)libread.a $(BUILD_FOLDER)
 	$(CC) -DCLIENT -o $(BUILD_FOLDER)$@ $< $(word 2, $^) $(word 3, $^)
 
+libs: $(LIB_FOLDER)libread.a $(LIB_FOLDER)libmcs.a
+
+libread: $(LIB_FOLDER)libread.a
+
+libmcs: $(LIB_FOLDER)libmcs.a
+
 # Lib read
 $(LIB_FOLDER)libread.a: $(BUILD_FOLDER)read_lib.o $(BUILD_FOLDER)
 	ar rcs $@ $<
+	rm $(BUILD_FOLDER)*.o
 
 $(BUILD_FOLDER)read_lib.o: $(READ_LIB_FOLDER)read_lib.c $(BUILD_FOLDER)
 	$(CC) -c $< -o $@
@@ -23,6 +30,7 @@ $(BUILD_FOLDER)read_lib.o: $(READ_LIB_FOLDER)read_lib.c $(BUILD_FOLDER)
 # Lib global MCS
 $(LIB_FOLDER)libmcs.a: $(BUILD_FOLDER)proto.o $(BUILD_FOLDER)data.o $(BUILD_FOLDER)session.o $(LIB_FOLDER) $(BUILD_FOLDER)
 	ar rcs $@ $< $(word 2, $^) $(word 3, $^)
+	rm $(BUILD_FOLDER)*.o
 
 $(BUILD_FOLDER)proto.o: proto.c $(BUILD_FOLDER)
 	$(CC) -c $< -o $@
