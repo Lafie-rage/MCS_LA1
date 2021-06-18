@@ -73,7 +73,7 @@ void creerProcService(int sockEcoute, int sockDial) { // TODO : A déplacer dans
 }
 
 void serveur (char *adrIP, int port) {
-	int sockDial;	
+	int sockDial;
 	//struct sockaddr_in addrClt;	// adressage du client connecté
 
 	sockEcoute = creerSocketEcoute(adrIP, port);
@@ -122,9 +122,9 @@ void dialClt2srv(int socketAppel) { // TODO : A déplacer dans proto.c
 	do {
 		memset(buff, 0, MAX_BUFF);
 		printf ("tapez votre message : \n"); fflush(stdout);
-		scanf("%[^ ]\n", buff);
+		//scanf("%[^ ]\n", buff);
 		//gets(buff);
-		//custom_read(buff,MAX_BUFF);
+		custom_read(buff,MAX_BUFF);
 		envoyerMessage(socketAppel, buff) ;
 		recevoirMessage(socketAppel, buff, MAX_BUFF) ;
 	} while (strcmp(buff,"BYE")!=0) ;
