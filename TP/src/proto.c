@@ -15,30 +15,44 @@
 
 void dialSrv2Clt(int socketDial){
 	char buff[MAX_BUFF];
+  requete_t req;
 
 	do {
 		memset(buff, 0, MAX_BUFF);
-		recevoirMessage(socketDial, buff, MAX_BUFF) ;
+		recevoirRequete(socketDial, &req) ;
 		// appeler une fct avec le param buff pour connaître le numero de requete reçue
 		// on réalise un switch sur ce numéro : à charque numéro correspond une fonction
 		// de traitement qui génére un réponse
 		// cette réponse sera envoyer après serialization
-		if (strcmp(buff,"/bye")==0) envoyerMessage(socketDial, BYE) ;
-		else envoyerMessage(socketDial, OK) ;
+    if(req.reqNum > 0) // commands
+      traitementCommandes(socketDial, req);
+    else // Messages
+      envoieMessage(socketDial, req);
+/*
+    if(req.reqNum == BYE_REQ_TYPE) envoyerRequete(socketDial, BYE) ;
+		else envoyerRequete(socketDial, OK) ;*/
 	} while (strcmp(buff,"/bye")!=0);
+}
+
+void traitementCommandes(int socketDial, requete_t req) {
+
+}
+
+void envoieMessage(int socketDial, requete_t req) {
+
 }
 
 void dialClt2srv(int socketAppel) {
 	char buff[MAX_BUFF];
-
+  requete_t req;
 	do {
 		memset(buff, 0, MAX_BUFF);
 		printf ("tapez votre message : \n"); fflush(stdout);
 		//scanf("%[^ ]\n", buff);
 		//gets(buff);
 		custom_read(buff,MAX_BUFF);
-		envoyerMessage(socketAppel, buff) ;
-		recevoirMessage(socketAppel, buff, MAX_BUFF) ;
+		envoyerRequete(socketAppel, buff) ;
+		recevoirRequete(socketAppel, &req) ;
 	} while (strcmp(buff,"BYE")!=0) ;
 }
 

@@ -5,6 +5,9 @@
 #ifndef DATA_H
 #define DATA_H
 
+#define CLOSE_RQ_TYPE 10
+
+
 /**
  *	\def	MAX_BUFF	taille maximale d'une chaine échangée
  */
