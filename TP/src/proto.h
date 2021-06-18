@@ -22,4 +22,8 @@ void dialClt2srv(int socketAppel);
 
 void dialSrv2Clt(int socketDial);
 
+void traitementCommandes(int socketDial, requete_t req);
+
+void envoieMessage(int socketDial, requete_t req);
+
 #endif /* PROTO_H */
