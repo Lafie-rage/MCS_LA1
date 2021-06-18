@@ -8,10 +8,10 @@ READ_LIB_FOLDER=read_lib/
 all : server client
 
 server: StreamCltSrv.c $(LIB_FOLDER)libmcs.a $(LIB_FOLDER)libread.a $(BUILD_FOLDER)
-	$(CC) -o $(BUILD_FOLDER)$@ $< $(word 2, $^) $(word 3, $^)
+	$(CC) -DSERVER -o $(BUILD_FOLDER)$@ $< $(word 2, $^) $(word 3, $^)
 
 client: StreamCltSrv.c $(LIB_FOLDER)libmcs.a $(LIB_FOLDER)libread.a $(BUILD_FOLDER)
-	$(CC) -o $(BUILD_FOLDER)$@ $< $(word 2, $^) $(word 3, $^)
+	$(CC) -DCLIENT -o $(BUILD_FOLDER)$@ $< $(word 2, $^) $(word 3, $^)
 
 # Lib read
 $(LIB_FOLDER)libread.a: $(BUILD_FOLDER)read_lib.o $(BUILD_FOLDER)
