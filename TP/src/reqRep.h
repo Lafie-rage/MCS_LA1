@@ -4,7 +4,7 @@
 // Format de requête pour la sérialisation
 #define FMT_REQ_SERIAL_SEND "%hd|%hd|%s"
 // Fromat de la chaîne à désérailiser
-#define FMT_REQ_SERIAL_RECV "%hd|%hd|%[^ ]"
+#define FMT_REQ_SERIAL_RECV "%hd|%hd|%[^\t\n]"
 
 // Ces deux constantes peuvent changer de forme
 // Le but étant de pouvoir transmettre la requête en un seul message et donc pouvoir la sérialiser ou la désérialiser facilement
