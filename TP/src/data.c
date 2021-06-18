@@ -56,11 +56,11 @@ void envoyerRequete(int socketEchange, buffer_t input) {
 	// et aussi le(s) caractère(s) definissant qu'un texte n'est plus un message mais une commande
 	// Ici, on a prit '/' mais ça peut-être n'importe quoi d'autre
 	if(input[0]== '/') { // CMD
-		if (strStartWith(input,"/bye") == 1) req.reqNum = 10;
-		else if (strStartWith(input,"/connect") == 1) req.reqNum = 11;
-		else if (strStartWith(input,"/list") == 1) req.reqNum = 20;
-		else if (strStartWith(input,"/talk") == 1) req.reqNum = 21;
-		else if (strStartWith(input,"/private") == 1) req.reqNum = 22;
+		if (strStartWith(input,CMD_BYE) == 1) req.reqNum = CMD_BYE_NUM;
+		else if (strStartWith(input,CMD_CONNECT) == 1) req.reqNum = CMD_CONNECT_NUM;
+		else if (strStartWith(input,CMD_LIST) == 1) req.reqNum = CMD_LIST_NUM;
+		else if (strStartWith(input,CMD_TALK) == 1) req.reqNum = CMD_TALK_NUM;
+		else if (strStartWith(input,CMD_PRIVATE) == 1) req.reqNum = CMD_PRIVATE_NUM;
 		else req.reqNum = 0;
 	}
 	else req.reqNum = 0; // MSG
