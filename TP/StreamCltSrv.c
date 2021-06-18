@@ -37,7 +37,7 @@ void dialSrv2Clt(int socketDial);
 void dialClt2srv(int socketAppel);
 char * progName;
 
-int main (int c, char **v) {
+int main (__attribute__((unused)) int c, char **v) {
 	progName = v[0];
 #ifdef CLIENT
 	if (c<3) {printf("usage %d: %s @IP port\n", c, basename(progName)); /*exit(-1);*/ client(IP_ANY, PORT_SRV);}
@@ -73,8 +73,8 @@ void creerProcService(int sockEcoute, int sockDial) { // TODO : A déplacer dans
 }
 
 void serveur (char *adrIP, int port) {
-	int sockDial;				// socket de dialogue avec un client
-	struct sockaddr_in addrClt;	// adressage du client connecté
+	int sockDial;	
+	//struct sockaddr_in addrClt;	// adressage du client connecté
 
 	sockEcoute = creerSocketEcoute(adrIP, port);
 	while(1)	// daemon !
