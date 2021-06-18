@@ -7,11 +7,11 @@
 
 #define CLOSE_RQ_TYPE 10
 
-#define CMD_BYE 		/bye
-#define CMD_CONNECT		/connect
-#define CMD_LIST		/list
-#define CMD_TALK		/talk
-#define CMD_PRIVATE		/private
+#define CMD_BYE 		"/bye"
+#define CMD_CONNECT		"/connect"
+#define CMD_LIST		"/list"
+#define CMD_TALK		"/talk"
+#define CMD_PRIVATE		"/private"
 
 #define CMD_BYE_NUM 		10
 #define CMD_CONNECT_NUM		11
