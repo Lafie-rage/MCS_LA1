@@ -1,3 +1,7 @@
+/**
+ * Couche 5
+ */
+
 #ifndef SESSION_H
 #define SESSION_H
 

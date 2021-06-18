@@ -1,10 +1,11 @@
+/**
+ * Couche 6
+ */
+
 #include <string.h>
 #include <stdio.h>
 #include "data.h"
 #include "session.h"
-
-// Correspond à la couche 6 du modèle OSI (couche Présentation)
-
 
 /**
 *	\fn		void str2req(buffer_t buffer, requete_t *req)
@@ -43,9 +44,9 @@ void envoyerRequete(int socketEchange, buffer_t input) {
 	// et aussi le(s) caractère(s) definissant qu'un texte n'est plus un message mais une commande
 	// Ici, on a prit '/' mais ça peut-être n'importe quoi d'autre
 	if(input[0]== '/') { // CMD
-		if (strcmp(buffer,"/bye")==0) req.reqNum = 1;
-		else if (strcmp(buffer,"/list")==0) req.reqNum = 2;
-		else 	if (strcmp(buffer,"/talk")==0) req.reqNum = 3;
+		if (strcmp(input,"/bye")==0) req.reqNum = 1;
+		else if (strcmp(input,"/list")==0) req.reqNum = 2;
+		else 	if (strcmp(input,"/talk")==0) req.reqNum = 3;
 		// etc...
 	}
 	else req.reqNum = 0; // MSG

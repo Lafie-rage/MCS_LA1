@@ -1,7 +1,9 @@
+/**
+ * Couche 6
+ */
+
 #ifndef DATA_H
 #define DATA_H
-
-// Correspond à la couche 6 du modèle OSI (couche Présentation)
 
 /**
  *	\def	MAX_BUFF	taille maximale d'une chaine échangée

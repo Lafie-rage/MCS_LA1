@@ -11,7 +11,6 @@
 #include <arpa/inet.h>
 
 #include "session.h"
-#include "read_lib/read_lib.h"
 
 #define CHECK(sts, msg) if ((sts)==-1) {perror(msg); exit(-1);}
 #define PAUSE(msg)	printf("%s [Appuyez sur entrée pour continuer]", msg); getchar();
@@ -21,11 +20,6 @@
 #define IP_LOCAL	"172.20.30.13"
 #define IP_DISTANT	"172.20.30.19"
 #define PORT_SRV	50000
-#define MSG1		"Salut toi, le fond de l'eau est clair par ici !"
-#define MSG2		"Salut toi, le fond de l'eau est brouillé par ici !"
-#define OK			"OK"
-#define NOK			"Pas OK"
-#define BYE			"BYE"
 
 #include "session.h"
 int sockEcoute;		// socket d'écoute de l'aaplication serveur
@@ -51,25 +45,6 @@ int main (__attribute__((unused)) int c, char **v) {
 	else serveur(v[1], atoi(v[2]));
 #endif
 	return 0;
-}
-
-void creerProcService(int sockEcoute, int sockDial) { // TODO : A déplacer dans proto.c
-	int pid;
-
-	// Créer un processus de service pour l'affecter au service du client connecté
-	CHECK(pid=fork(), "-- PB fork() --");
-	if (pid == 0) {
-		// Processus de service
-		// fermer la socket d'écoute puisque le processus de service ne répond pas
-		// aux requêtes de connexion
-		CHECK(close(sockEcoute),"-- PB close() --");
-		// Dialoguer avec le client
-		dialSrv2Clt(sockDial);
-		// Fermer la socket de dialogue
-		CHECK(close(sockDial),"-- PB close() --");
-		// Fin du processus de service
-		exit(sockDial);
-	}
 }
 
 void serveur (char *adrIP, int port) {
@@ -99,35 +74,6 @@ void client (char *adrIP, int port) {
 	// Fermer la socket d'appel
 	CHECK(close(sockAppel),"-- PB close() --");
 	//PAUSE("CLIENT-close()");
-}
-
-
-void dialSrv2Clt(int socketDial){ // TODO : A déplacer dans proto.c
-	char buff[MAX_BUFF];
-
-	do {
-		memset(buff, 0, MAX_BUFF);
-		recevoirMessage(socketDial, buff, MAX_BUFF) ;
-		// appeler une fct avec le param buff pour connaître le numero de requete reçue
-		// on réalise un switch sur ce numéro : à charque numéro correspond une fonction
-		// de traitement qui génére un réponse
-		// cette réponse sera envoyer après serialization
-		if (strcmp(buff,"/bye")==0) envoyerMessage(socketDial, BYE) ;
-		else envoyerMessage(socketDial, OK) ;
-	} while (strcmp(buff,"/bye")!=0);
-}
-void dialClt2srv(int socketAppel) { // TODO : A déplacer dans proto.c
-	char buff[MAX_BUFF];
-
-	do {
-		memset(buff, 0, MAX_BUFF);
-		printf ("tapez votre message : \n"); fflush(stdout);
-		//scanf("%[^ ]\n", buff);
-		//gets(buff);
-		custom_read(buff,MAX_BUFF);
-		envoyerMessage(socketAppel, buff) ;
-		recevoirMessage(socketAppel, buff, MAX_BUFF) ;
-	} while (strcmp(buff,"BYE")!=0) ;
 }
 
 void deroute (int sigNum) {
