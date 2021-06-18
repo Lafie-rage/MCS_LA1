@@ -28,6 +28,18 @@ void str2req(const buffer_t buffer, requete_t *req) {
 }
 
 /**
+*	\fn		short startWith(char *str, char *pre)
+*	\brief	Vérifie si une chaine commence avec une autre
+*	\param	str : chaine de caractére à vérifier
+*	\param	pre : prefixe à trouver
+*	\return booléen
+*/
+short strStartWith(char *str, char *pre)
+{
+    return strncmp(pre, str, strlen(pre)) == 0;
+}
+
+/**
 *	\fn		void envoyerRequete(int socketEchange, requete_t req)
 *	\brief	Envoi d'une requête sur une socket
 *	\param	socketEchange : socket d'échange à utiliser pour l'envoi
@@ -44,10 +56,11 @@ void envoyerRequete(int socketEchange, buffer_t input) {
 	// et aussi le(s) caractère(s) definissant qu'un texte n'est plus un message mais une commande
 	// Ici, on a prit '/' mais ça peut-être n'importe quoi d'autre
 	if(input[0]== '/') { // CMD
-		if (strcmp(input,"/bye")==0) req.reqNum = 1;
-		else if (strcmp(input,"/list")==0) req.reqNum = 2;
-		else 	if (strcmp(input,"/talk")==0) req.reqNum = 3;
-		// etc...
+		if (strStartWith(input,"/bye") == 1) req.reqNum = 10;
+		else if (strStartWith(input,"/connect") == 1) req.reqNum = 11;
+		else if (strStartWith(input,"/list") == 1) req.reqNum = 20;
+		else if (strStartWith(input,"/talk") == 1) req.reqNum = 21;
+		else req.reqNum = 0;
 	}
 	else req.reqNum = 0; // MSG
 
