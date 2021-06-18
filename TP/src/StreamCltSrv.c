@@ -10,7 +10,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-#include "session.h"
+#include "proto.h"
 
 #define CHECK(sts, msg) if ((sts)==-1) {perror(msg); exit(-1);}
 #define PAUSE(msg)	printf("%s [Appuyez sur entrée pour continuer]", msg); getchar();

@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+#include <unistd.h>
 #include "data.h" // On suit l'ordre des couches de manière croissante
 #include "proto.h"
 #include "read_lib/read_lib.h"
