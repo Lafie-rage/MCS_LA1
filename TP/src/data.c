@@ -60,11 +60,14 @@ void envoyerRequete(int socketEchange, buffer_t input) {
 		else if (strStartWith(input,"/connect") == 1) req.reqNum = 11;
 		else if (strStartWith(input,"/list") == 1) req.reqNum = 20;
 		else if (strStartWith(input,"/talk") == 1) req.reqNum = 21;
+		else if (strStartWith(input,"/private") == 1) req.reqNum = 22;
 		else req.reqNum = 0;
 	}
 	else req.reqNum = 0; // MSG
 
 	req.reqSizeBuff = strlen(input);
+
+	
 	strcpy(req.reqBuff, input);
 
 	req2str(&req, buffer);
