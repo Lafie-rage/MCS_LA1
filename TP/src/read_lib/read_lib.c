@@ -1,8 +1,7 @@
 /*******************************************************
 Nom ......... : read_lib.c
-Role ........ : Permet de lire une chaine de caractére
+Role ........ : Permet de lire une chaine de caractere
 Auteur ...... : Saint-Omer
-
 ********************************************************/
 #include "read_lib.h"
 
