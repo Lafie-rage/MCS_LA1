@@ -1,3 +1,5 @@
 *.o
 build/*
 lib/*
+client
+server
