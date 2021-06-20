@@ -8,11 +8,12 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include "data.h"
+#include "users.h"
 #include "proto.h"
 #include "read_lib/read_lib.h"
 
 
-void dialSrv2Clt(int socketDial){
+void dialSrv2Clt(int socketDial, users_t *users){
 	char buff[MAX_BUFF];
   	requete_t req;
 
@@ -23,7 +24,7 @@ void dialSrv2Clt(int socketDial){
     if(req.reqNum > 0) // commands
       traitementCommandes(socketDial, req);
     else // Messages
-      envoieMessage(socketDial, req);
+      traitementMessage(socketDial, req, users);
 
     envoyerRequete(socketDial, "OK");
 
@@ -32,7 +33,7 @@ void dialSrv2Clt(int socketDial){
 
 void traitementCommandes(int socketDial, requete_t req) {
 
- 
+
 		char param1[100];
 		char param2[100];
 		strcpy(param2,"");sscanf(req.reqBuff,"%s%s",param1,param2);
@@ -46,8 +47,28 @@ void traitementCommandes(int socketDial, requete_t req) {
 
 }
 
-void envoieMessage(int socketDial, requete_t req) {
+void traitementMessage(int socketDial, requete_t req, users_t *users) {
+	// Retrieve sender by socketDial
+	user_t sender = retrieveUserBySocket(socketDial, users);
+	// Retrieve message from request
+	buffer_t message = req.reqBuff;
 
+	if(sender.destiantionSocket == 0) { // everyone
+		// Formating request
+		sprintf(message, "From %s to everyone : %s", sender.name, message);
+		for(int i = 0; i < users.size: i++) {
+			// Sending message to each client
+			envoyerRequete(users[i].socket, message);
+		}
+	}
+	else { // Private message
+		// Formating request
+		user_t receiver = retrieveUserBySocket(sender.destiantionSocket);
+		sprintf(message, "From %s to %s : %s", sender.name, receiver.name, message)
+		// Sending to both of them
+		envoyerRequete(sender.socket, message);
+		envoyerRequete(receiver.socket, message);
+	}
 }
 
 void dialClt2srv(int socketAppel) {
@@ -64,7 +85,7 @@ void dialClt2srv(int socketAppel) {
 	} while (strcmp(buff,"BYE")!=0) ;
 }
 
-void creerProcService(int sockEcoute, int sockDial) {
+void creerProcService(int sockEcoute, int sockDial, users_t *users) {
 	int pid;
 
 	// Créer un processus de service pour l'affecter au service du client connecté
@@ -75,7 +96,7 @@ void creerProcService(int sockEcoute, int sockDial) {
 		// aux requêtes de connexion
 		CHECK(close(sockEcoute),"-- PB close() --");
 		// Dialoguer avec le client
-		dialSrv2Clt(sockDial);
+		dialSrv2Clt(sockDial, users);
 		// Fermer la socket de dialogue
 		CHECK(close(sockDial),"-- PB close() --");
 		// Fin du processus de service

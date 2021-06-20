@@ -48,6 +48,7 @@ int main (__attribute__((unused)) int c, char **v) {
 
 void serveur (char *adrIP, int port) {
 	int sockDial;
+	users_t users;
 	//struct sockaddr_in addrClt;	// adressage du client connecté
 
 	sockEcoute = creerSocketEcoute(adrIP, port);
@@ -56,7 +57,7 @@ void serveur (char *adrIP, int port) {
 		// Accepter une connexion
 		sockDial = accepterClt(sockEcoute);
 		// Lancer un processus de service pour le client connecté
-		creerProcService(sockEcoute, sockDial);
+		creerProcService(sockEcoute, sockDial, &users);
 		// SEUL LE SERVEUR execute la suite du code !
 		// Fermer la socket de dialogue utilisé par le processus de service, elle est inutile pour le serveur
 		CHECK(close(sockDial),"-- PB close() --");
