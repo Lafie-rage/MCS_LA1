@@ -8,6 +8,10 @@
 #include <sys/wait.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <fcntl.h>
+#include <sys/shm.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #include "proto.h"
 
@@ -46,7 +50,12 @@ int main (__attribute__((unused)) int c, char **v) {
 
 void serveur (char *adrIP, int port) {
 	int sockDial;
-	users_t users;
+	users_t *users2;
+	int shmId;
+	CHECK(shmId = shmget(ftok("/tmp",12345),sizeof(users_t), 0666| IPC_CREAT), " --- Problème création mémoire partagée --- ");
+   	users2 = shmat(shmId, NULL, 0);
+   	initUsers(users2);
+
 	//struct sockaddr_in addrClt;	// adressage du client connecté
 
 	sockEcoute = creerSocketEcoute(adrIP, port);
@@ -55,7 +64,7 @@ void serveur (char *adrIP, int port) {
 		// Accepter une connexion
 		sockDial = accepterClt(sockEcoute);
 		// Lancer un processus de service pour le client connecté
-		creerProcService(sockEcoute, sockDial, &users);
+		creerProcService(sockEcoute, sockDial, shmId);
 		// SEUL LE SERVEUR execute la suite du code !
 		// Fermer la socket de dialogue utilisé par le processus de service, elle est inutile pour le serveur
 		CHECK(close(sockDial),"-- PB close() --");

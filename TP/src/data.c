@@ -40,7 +40,7 @@ short strStartWith(char *str, char *pre)
 }
 
 /**
-*	\fn		void envoyerRequete(int socketEchange, requete_t req)
+*	\fn		void envoyerRequete(int socketEchange, buffer_t input)
 *	\brief	Envoi d'une requête sur une socket
 *	\param	socketEchange : socket d'échange à utiliser pour l'envoi
 *	\param	req : requête à sérialiser avant envoi
@@ -53,14 +53,14 @@ void envoyerRequete(int socketEchange, buffer_t input) {
 		else if (strStartWith(input,CMD_LIST) == 1) reqNum = CMD_LIST_NUM;
 		else if (strStartWith(input,CMD_TALK) == 1) reqNum = CMD_TALK_NUM;
 		else if (strStartWith(input,CMD_PRIVATE) == 1) reqNum = CMD_PRIVATE_NUM;
-		else reqNum = CMD_UNKNOW_NUM;
+		else reqNum = CMD_ERROR_UNKNOW_NUM;
 	}
 	else reqNum = 0; // MSG
 	envoyerRequeteWithReqNum(socketEchange, input, reqNum);
 }
 
 /**
-*	\fn		void envoyerRequete(int socketEchange, requete_t req)
+*	\fn		void envoyerRequeteWithReqNum(int socketEchange, buffer_t input, int reqNum)
 *	\brief	Envoi d'une requête sur une socket
 *	\param	socketEchange : socket d'échange à utiliser pour l'envoi
 *	\param	req : requête à sérialiser avant envoi

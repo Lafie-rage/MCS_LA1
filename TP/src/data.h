@@ -23,6 +23,8 @@
 #define CMD_ERROR_UNKNOW_NUM		90
 #define CMD_ERROR_USERNAME_ALREADY_TAKEN 91
 #define CMD_ERROR_MISSING_ARGUMENT 92
+#define CMD_ERROR_UNKNOW_ERROR 93
+#define CMD_ERROR_SERVER_FULL 94
 
 /**
  *	\def	MAX_BUFF	taille maximale d'une chaine échangée
