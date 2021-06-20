@@ -15,7 +15,7 @@
 
 void dialSrv2Clt(int socketDial){
 	char buff[MAX_BUFF];
-  requete_t req;
+  	requete_t req;
 
 	do {
 		memset(buff, 0, MAX_BUFF);
@@ -35,6 +35,18 @@ void dialSrv2Clt(int socketDial){
 }
 
 void traitementCommandes(int socketDial, requete_t req) {
+
+ 
+		char param1[100];
+		char param2[100];
+		strcpy(param2,"");sscanf(req.reqBuff,"%s%s",param1,param2);
+		printf("reqPram : %s\n",param2);
+		if (strcmp(param2,"") == 0){
+			envoyerRequete(socketDial, "Argument Manquant");
+		}
+		else{
+				envoyerRequete(socketDial, param2);
+		}
 
 }
 

@@ -15,9 +15,12 @@
 
 #define CMD_BYE_NUM 		10
 #define CMD_CONNECT_NUM		11
+
 #define CMD_LIST_NUM		20
 #define CMD_TALK_NUM		21
 #define CMD_PRIVATE_NUM		22
+
+#define CMD_UNKNOW_NUM		90
 
 /**
  *	\def	MAX_BUFF	taille maximale d'une chaine échangée
