@@ -44,32 +44,37 @@ short strStartWith(char *str, char *pre)
 *	\brief	Envoi d'une requête sur une socket
 *	\param	socketEchange : socket d'échange à utiliser pour l'envoi
 *	\param	req : requête à sérialiser avant envoi
-*	\return -1 if error else 0
 */
 void envoyerRequete(int socketEchange, buffer_t input) {
-	requete_t req;
-	buffer_t buffer;
-
+	int reqNum;
 	if(input[0]== '/') { // CMD
-		if (strStartWith(input,CMD_BYE) == 1) req.reqNum = CMD_BYE_NUM;
-		else if (strStartWith(input,CMD_CONNECT) == 1) req.reqNum = CMD_CONNECT_NUM;
-		else if (strStartWith(input,CMD_LIST) == 1) req.reqNum = CMD_LIST_NUM;
-		else if (strStartWith(input,CMD_TALK) == 1) req.reqNum = CMD_TALK_NUM;
-		else if (strStartWith(input,CMD_PRIVATE) == 1) req.reqNum = CMD_PRIVATE_NUM;
-		else req.reqNum = CMD_UNKNOW_NUM;
+		if (strStartWith(input,CMD_BYE) == 1) reqNum = CMD_BYE_NUM;
+		else if (strStartWith(input,CMD_CONNECT) == 1) reqNum = CMD_CONNECT_NUM;
+		else if (strStartWith(input,CMD_LIST) == 1) reqNum = CMD_LIST_NUM;
+		else if (strStartWith(input,CMD_TALK) == 1) reqNum = CMD_TALK_NUM;
+		else if (strStartWith(input,CMD_PRIVATE) == 1) reqNum = CMD_PRIVATE_NUM;
+		else reqNum = CMD_UNKNOW_NUM;
 	}
-	else req.reqNum = 0; // MSG
-
-	req.reqSizeBuff = strlen(input);
-
-
-	strcpy(req.reqBuff, input);
-
-	req2str(&req, buffer);
-
-	envoyerMessage(socketEchange, buffer);
+	else reqNum = 0; // MSG
+	envoyerRequeteWithReqNum(socketEchange, input, reqNum);
 }
 
+/**
+*	\fn		void envoyerRequete(int socketEchange, requete_t req)
+*	\brief	Envoi d'une requête sur une socket
+*	\param	socketEchange : socket d'échange à utiliser pour l'envoi
+*	\param	req : requête à sérialiser avant envoi
+* 	\param	reqNum : numéro de requête
+*/
+void envoyerRequeteWithReqNum(int socketEchange, buffer_t input, int reqNum) {
+	requete_t req;
+	buffer_t buffer;
+	req.reqNum = reqNum;
+	req.reqSizeBuff = strlen(input);
+	strcpy(req.reqBuff, input);
+	req2str(&req, buffer);
+	envoyerMessage(socketEchange, buffer);
+}
 /**
 *	\fn		void recevoirRequete(int socketEchange, requete_t *req)
 *	\brief	Réception d'une requête sur une socket
