@@ -16,14 +16,14 @@
 
 #define CHECK(sts, msg) if ((sts)==-1) {perror(msg); exit(-1);}
 
-void creerProcService(int sockEcoute, int sockDial);
+void creerProcService(int sockEcoute, int sockDial, users_t *users);
 
 void dialClt2srv(int socketAppel);
 
-void dialSrv2Clt(int socketDial);
+void dialSrv2Clt(int socketDial, users_t *users);
 
 void traitementCommandes(int socketDial, requete_t req);
 
-void envoieMessage(int socketDial, requete_t req);
+void traitementMessage(int socketDial, requete_t req, users_t *users);
 
 #endif /* PROTO_H */
