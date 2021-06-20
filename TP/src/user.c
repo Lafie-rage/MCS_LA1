@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "user.h"
 
 #include <stddef.h>
@@ -17,9 +18,9 @@ user_t retrieveUserByName(users_t users ,char *name){
 
 user retrieveUserBySocket(users_t users, int socket) {
   int i = 0;
-  while(users[i].socket != socket && i++ < users.size);
-  if(i == users.size) return NULL; // User not found
-  return users[i];
+  while(users.userList[i].socket != socket && i++ < users.size);
+  //if(i == users.size) return NULL_USER;
+  return users.userList[i];
 }
 
 int addUser(users_t users, char name, int socket){

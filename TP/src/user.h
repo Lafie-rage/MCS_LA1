@@ -16,7 +16,9 @@ typedef struct Users
 {
 	user_t userList[MAX_USER];
 	int size;
-}users_t;
+} users_t;
+
+user_t retrieveUserBySocket(users_t users, int socket);
 
 user_t retrieveUserByName(users_t users ,char *name);
 

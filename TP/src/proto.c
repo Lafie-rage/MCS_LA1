@@ -8,7 +8,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include "data.h"
-#include "users.h"
+#include "user.h"
 #include "proto.h"
 #include "read_lib/read_lib.h"
 
@@ -24,7 +24,7 @@ void dialSrv2Clt(int socketDial, users_t *users){
     if(req.reqNum > 0) // commands
       traitementCommandes(socketDial, req, users);
     else // Messages
-      traitementMessage(socketDial, req, users);
+      traitementMessage(socketDial, req, *users);
 
     envoyerRequete(socketDial, "OK");
 
@@ -67,26 +67,27 @@ void traitementCommandes(int socketDial, requete_t req) {
 
 }
 
-void traitementMessage(int socketDial, requete_t req, users_t *users) {
+void traitementMessage(int socketDial, requete_t req, users_t users) {
 	// Retrieve sender by socketDial
-	user_t sender = retrieveUserBySocket(socketDial, users);
+	user_t sender = retrieveUserBySocket(users, socketDial);
 	// Retrieve message from request
-	buffer_t message = req.reqBuff;
+	buffer_t message;
+	strcpy(message, req.reqBuff);
 
 	if(sender.destiantionSocket == 0) { // everyone
 		// Formating request
 		sprintf(message, "From %s to everyone : %s", sender.name, message);
-		for(int i = 0; i < users.size: i++) {
+		for(int i = 0; i < users.size; i++) {
 			// Sending message to each client
-			envoyerRequete(users[i].socket, message);
+			envoyerRequete(users.userList[i].socket, message);
 		}
 	}
 	else { // Private message
 		// Formating request
-		user_t receiver = retrieveUserBySocket(sender.destiantionSocket);
-		sprintf(message, "From %s to %s : %s", sender.name, receiver.name, message)
-		// Sending to both of them
+		user_t receiver = retrieveUserBySocket(users, sender.destiantionSocket);
+		sprintf(message, "From %s to %s : %s", sender.name, receiver.name, message);
 		envoyerRequete(sender.socket, message);
+		// Sending to both of them
 		envoyerRequete(receiver.socket, message);
 	}
 }

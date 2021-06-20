@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include "data.h"
 #include "reqRep.h"
+#include "user.h"
 
 
 #define OK			"OK"
@@ -24,6 +25,6 @@ void dialSrv2Clt(int socketDial, users_t *users);
 
 void traitementCommandes(int socketDial, requete_t req);
 
-void traitementMessage(int socketDial, requete_t req, users_t *users);
+void traitementMessage(int socketDial, requete_t req, users_t users);
 
 #endif /* PROTO_H */
