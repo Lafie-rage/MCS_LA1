@@ -22,7 +22,7 @@ void dialSrv2Clt(int socketDial, users_t *users){
 		recevoirRequete(socketDial, &req) ;
 
     if(req.reqNum > 0) // commands
-      traitementCommandes(socketDial, req);
+      traitementCommandes(socketDial, req, users);
     else // Messages
       traitementMessage(socketDial, req, users);
 
@@ -47,7 +47,8 @@ void traitementCommandes(int socketDial, requete_t req) {
 					return;
 				}
 				// vérifie si le pseudo est libre
-				if (){
+				user_t user = retrieveUserByName(sender.destiantionSocket);
+				if (user.socket == NULL){
 					envoyerRequeteWithReqNum(socketDial, "CMD_ERROR_USERNAME_ALREADY_TAKEN",CMD_ERROR_USERNAME_ALREADY_TAKEN);
 					return;
 				}

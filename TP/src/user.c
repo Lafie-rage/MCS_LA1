@@ -2,7 +2,7 @@
 
 #include <stddef.h>
 #include <string.h>
-user_t findUserByName(users_t users ,char *name){
+user_t retrieveUserByName(users_t users ,char *name){
 
 	for (int i = 0; i < MAX_USER; ++i)
 	{
@@ -20,4 +20,20 @@ user retrieveUserBySocket(users_t users, int socket) {
   while(users[i].socket != socket && i++ < users.size);
   if(i == users.size) return NULL; // User not found
   return users[i];
+}
+
+int addUser(users_t users, char name, int socket){
+	user_t newUser;
+	strcpy(newUser.name,name);
+	newUser.socket = socket;
+	newUser.destiantionSocket = EVERYONE_DESTIONATION_SOCKET;
+	for (int i = 0; i < MAX_USER; ++i)
+	{
+		if(users.userList[i].socket = NOT_USE_SOCKET){
+			users.userList[i] = newUser;
+			return 0;
+		}
+
+	}
+	return -1
 }

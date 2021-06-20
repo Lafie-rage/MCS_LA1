@@ -18,6 +18,6 @@ typedef struct Users
 	int size;
 }users_t;
 
-user_t findUserByName(users_t users ,char *name);
+user_t retrieveUserByName(users_t users ,char *name);
 
 #endif /* USER_H */
