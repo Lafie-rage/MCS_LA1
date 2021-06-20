@@ -8,11 +8,11 @@ READ_LIB_FOLDER=$(SRC_FOLDER)read_lib/
 
 all : server client
 
-server: $(SRC_FOLDER)StreamCltSrv.c $(LIB_FOLDER)libmcs.a $(LIB_FOLDER)libread.a $(BUILD_FOLDER)
-	$(CC) -DSERVER -o $@ $< $(word 2, $^) $(word 3, $^)
+server: $(SRC_FOLDER)StreamCltSrv.c $(LIB_FOLDER)libmcs.a $(LIB_FOLDER)libread.a
+	$(CC) -DSERVER -o $@ $^
 
-client: $(SRC_FOLDER)StreamCltSrv.c $(LIB_FOLDER)libmcs.a $(LIB_FOLDER)libread.a $(BUILD_FOLDER)
-	$(CC) -DCLIENT -o $@ $< $(word 2, $^) $(word 3, $^)
+client: $(SRC_FOLDER)StreamCltSrv.c $(LIB_FOLDER)libmcs.a $(LIB_FOLDER)libread.a
+	$(CC) -DCLIENT -o $@ $^
 
 libs: $(LIB_FOLDER)libread.a $(LIB_FOLDER)libmcs.a
 
@@ -21,7 +21,7 @@ libread: $(LIB_FOLDER)libread.a
 libmcs: $(LIB_FOLDER)libmcs.a
 
 # Lib read
-$(LIB_FOLDER)libread.a: $(BUILD_FOLDER)read_lib.o $(BUILD_FOLDER)
+$(LIB_FOLDER)libread.a: $(BUILD_FOLDER)read_lib.o $(LIB_FOLDER) $(BUILD_FOLDER)
 	ar rcs $@ $<
 
 $(BUILD_FOLDER)read_lib.o: $(READ_LIB_FOLDER)read_lib.c $(BUILD_FOLDER)
