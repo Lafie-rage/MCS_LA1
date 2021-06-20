@@ -7,11 +7,10 @@
 #include <string.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include "data.h" // On suit l'ordre des couches de manière croissante
+#include "data.h"
 #include "proto.h"
 #include "read_lib/read_lib.h"
 
-// Traitement en fonction du type de requête reçue + fonctions venant de StreamCltSrv
 
 void dialSrv2Clt(int socketDial){
 	char buff[MAX_BUFF];
@@ -20,17 +19,14 @@ void dialSrv2Clt(int socketDial){
 	do {
 		memset(buff, 0, MAX_BUFF);
 		recevoirRequete(socketDial, &req) ;
-		// appeler une fct avec le param buff pour connaître le numero de requete reçue
-		// on réalise un switch sur ce numéro : à charque numéro correspond une fonction
-		// de traitement qui génére un réponse
-		// cette réponse sera envoyer après serialization
+
     if(req.reqNum > 0) // commands
       traitementCommandes(socketDial, req);
     else // Messages
       envoieMessage(socketDial, req);
-/*
-    if(req.reqNum == BYE_REQ_TYPE) envoyerRequete(socketDial, BYE) ;
-		else envoyerRequete(socketDial, OK) ;*/
+
+    envoyerRequete(socketDial, "OK");
+
 	} while (strcmp(buff,"/bye")!=0);
 }
 
