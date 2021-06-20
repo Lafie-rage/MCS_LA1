@@ -12,10 +12,11 @@ typedef struct User {
    int  destiantionSocket;
 } user_t;
 
-typedef struct Users
-{
-	user_t userList[MAX_CLIENT];
+typedef struct Users {
+	user_t userList[MAX_USER];
 	int size;
-}users_t;
+} users_t;
+
+user_t retrieveUserBySocket(users_t users, int socket);
 
 #endif /* USER_H */

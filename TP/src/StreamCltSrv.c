@@ -26,8 +26,6 @@ int sockEcoute;		// socket d'écoute de l'aaplication serveur
 void installSigServer(int sigNum);
 void client(char *adrIP, int port);
 void serveur (char *adrIP, int port);
-void dialSrv2Clt(int socketDial);
-void dialClt2srv(int socketAppel);
 char * progName;
 
 int main (__attribute__((unused)) int c, char **v) {
