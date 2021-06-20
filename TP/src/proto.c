@@ -31,18 +31,35 @@ void dialSrv2Clt(int socketDial){
 }
 
 void traitementCommandes(int socketDial, requete_t req) {
-
- 
 		char param1[100];
 		char param2[100];
-		strcpy(param2,"");sscanf(req.reqBuff,"%s%s",param1,param2);
+		strcpy(param2,"");
+
+ 		switch(req.reqNum){
+ 			case CMD_CONNECT_NUM :
+ 				sscanf(req.reqBuff,"%s%s",param1,param2);
+ 				// Verifie la présence de l'arguement
+ 				if (strcmp(param2,"") == 0){
+					envoyerRequeteWithReqNum(socketDial, "CMD_ERROR_MISSING_ARGUMENT",CMD_ERROR_MISSING_ARGUMENT);
+					return;
+				}
+				// vérifie si le pseudo est libre
+				if (){
+					envoyerRequeteWithReqNum(socketDial, "CMD_ERROR_USERNAME_ALREADY_TAKEN",CMD_ERROR_USERNAME_ALREADY_TAKEN);
+					return;
+				}
+				//ajoute l'user à la table 
+				//renvoie le nom qui lui a été affecté 
+				envoyerRequeteWithReqNum(socketDial, param2,CMD_CONNECT_NUM);
+
+ 				break;
+ 			case 11 :
+ 				break;
+ 		}
+
+		
 		printf("reqPram : %s\n",param2);
-		if (strcmp(param2,"") == 0){
-			envoyerRequete(socketDial, "Argument Manquant");
-		}
-		else{
-				envoyerRequete(socketDial, param2);
-		}
+
 
 }
 

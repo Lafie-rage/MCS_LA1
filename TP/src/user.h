@@ -14,8 +14,10 @@ typedef struct User {
 
 typedef struct Users
 {
-	user_t userList[MAX_CLIENT];
+	user_t userList[MAX_USER];
 	int size;
 }users_t;
+
+user_t findUserByName(users_t users ,char *name);
 
 #endif /* USER_H */

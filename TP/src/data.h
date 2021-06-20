@@ -20,8 +20,9 @@
 #define CMD_TALK_NUM		21
 #define CMD_PRIVATE_NUM		22
 
-#define CMD_UNKNOW_NUM		90
-#define CMD_USERNAME_ALREADY_TAKEN 91
+#define CMD_ERROR_UNKNOW_NUM		90
+#define CMD_ERROR_USERNAME_ALREADY_TAKEN 91
+#define CMD_ERROR_MISSING_ARGUMENT 92
 
 /**
  *	\def	MAX_BUFF	taille maximale d'une chaine échangée
