@@ -21,6 +21,7 @@
 #define CMD_PRIVATE_NUM		22
 
 #define CMD_UNKNOW_NUM		90
+#define CMD_USERNAME_ALREADY_TAKEN 91
 
 /**
  *	\def	MAX_BUFF	taille maximale d'une chaine échangée
@@ -52,12 +53,21 @@ void req2str(const requete_t *req, buffer_t buffer);
 void str2req(const buffer_t buffer, requete_t *req);
 
 /**
-*	\fn		void envoyerRequete(int socketEchange, requete_t req)
+*	\fn		void envoyerRequete(int socketEchange, buffer_t input)
 *	\brief	Envoi d'une requête sur une socket
 *	\param	socketEchange : socket d'échange à utiliser pour l'envoi
 *	\param	req : requête à sérialiser avant envoi
 */
 void envoyerRequete(int socketEchange, buffer_t input);
+
+/**
+*   \fn     void envoyerRequeteWithReqNum(int socketEchange, buffer_t input, int reqNum)
+*   \brief  Envoi d'une requête sur une socket
+*   \param  socketEchange : socket d'échange à utiliser pour l'envoi
+*   \param  req : requête à sérialiser avant envoi
+*   \param  reqNum : numéro de requête
+*/
+void envoyerRequeteWithReqNum(int socketEchange, buffer_t input, int reqNum);
 
 /**
 *	\fn		void recevoirRequete(int socketEchange, requete_t *req)
