@@ -10,14 +10,14 @@
 typedef enum { CMD, MSG } reqType_t;
 
 /**
- *	\struct		requete
+ *	\typedef	requete_t
  *	\brief		Définition d'une structure requête avec tous les attributs
  *				protocolaire
  */
 typedef struct requete {
-	short	reqNum;		/** numéro de requête -- toujours présent. Définit le type de requête (message ou type de commande) */
-	buffer_t reqBuff;	/** corps de la requête */
-	short	reqSizeBuff;/** taille du corps */
+	short	reqNum;				/**< Type de requête (message ou type de commande)#reqNum */
+	buffer_t reqBuff;		/**< Corps de la requête#reqBuff */
+	short	reqSizeBuff;	/**< Taille du corps#reqSizeBuff */
 } requete_t;
 
 #endif /* REQ_REP_H */

@@ -5,23 +5,30 @@
 #ifndef DATA_H
 #define DATA_H
 
+#include <limits.h>
+#include "session.h"
+
 #define CLOSE_RQ_TYPE 10
 
 #define CMD_BYE 		"/bye"
-#define CMD_CONNECT		"/connect"
+#define CMD_LOGIN		"/login"
 #define CMD_LIST		"/list"
 #define CMD_TALK		"/talk"
 #define CMD_PRIVATE		"/private"
 
 #define CMD_BYE_NUM 		10
-#define CMD_CONNECT_NUM		11
+#define CMD_LOGIN_NUM		11
 
 #define CMD_LIST_NUM		20
 #define CMD_TALK_NUM		21
 #define CMD_PRIVATE_NUM		22
 
-#define CMD_UNKNOW_NUM		90
-#define CMD_USERNAME_ALREADY_TAKEN 91
+#define CMD_ERROR_UNKNOW_NUM		90
+#define CMD_ERROR_USERNAME_ALREADY_TAKEN 91
+#define CMD_ERROR_MISSING_ARGUMENT 92
+#define CMD_ERROR_USER_DISCONNECTED 93
+#define CMD_ERROR_SERVER_FULL 94
+#define CMD_ERROR_UNKNOW_ERROR SHRT_MAX
 
 /**
  *	\def	MAX_BUFF	taille maximale d'une chaine échangée
@@ -33,7 +40,6 @@
  */
 typedef char buffer_t[MAX_BUFF];
 
-#include "session.h"
 #include "reqRep.h"
 
 /**
