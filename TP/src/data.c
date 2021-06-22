@@ -47,12 +47,12 @@ short strStartWith(char *str, char *pre)
 */
 void envoyerRequete(int socketEchange, buffer_t input) {
 	int reqNum;
-	if(input[0]== '/') { // CMD
-		if (strStartWith(input,CMD_BYE) == 1) reqNum = CMD_BYE_NUM;
-		else if (strStartWith(input,CMD_LOGIN) == 1) reqNum = CMD_LOGIN_NUM;
-		else if (strStartWith(input,CMD_LIST) == 1) reqNum = CMD_LIST_NUM;
-		else if (strStartWith(input,CMD_TALK) == 1) reqNum = CMD_TALK_NUM;
-		else if (strStartWith(input,CMD_PRIVATE) == 1) reqNum = CMD_PRIVATE_NUM;
+	if(input[0] == '/') { // CMD
+		if (strStartWith(input, CMD_BYE) == 1) reqNum = CMD_BYE_NUM;
+		else if (strStartWith(input, CMD_LOGIN) == 1) reqNum = CMD_LOGIN_NUM;
+		else if (strStartWith(input, CMD_LIST) == 1) reqNum = CMD_LIST_NUM;
+		else if (strStartWith(input, CMD_TALK) == 1) reqNum = CMD_TALK_NUM;
+		else if (strStartWith(input, CMD_PRIVATE) == 1) reqNum = CMD_PRIVATE_NUM;
 		else reqNum = CMD_ERROR_UNKNOW_NUM;
 	}
 	else reqNum = 0; // MSG

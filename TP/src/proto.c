@@ -42,7 +42,7 @@ static void traitementLogin(int socket, requete_t req, users_t *users) {
 	}
 	// vérifie si le pseudo est libre
 	user_t user = retrieveUserByName(users, name);
-	if (!usersCompare(user, NULL_USER)){
+	if (usersCompare(user, NULL_USER)){
 		envoyerRequeteWithReqNum(socket, "CMD_ERROR_USERNAME_ALREADY_TAKEN", CMD_ERROR_USERNAME_ALREADY_TAKEN);
 		return;
 	}
@@ -66,12 +66,12 @@ static void traitementList(int socket, users_t *users) {
 }
 
 static void traitementTalk(int socket, users_t *users) {
-	if(updateUserSocket(users, socket, EVERYONE_DESTIONATION_SOCKET)) {  // Impossible de mettre à jour l'utilisateur
+	if(!updateUserSocket(users, socket, EVERYONE_DESTIONATION_SOCKET)) {  // Impossible de mettre à jour l'utilisateur
 		envoyerRequeteWithReqNum(socket, "CMD_ERROR_UNKNOW_ERROR", CMD_ERROR_UNKNOW_ERROR);
 		return;
 	}
 
-	envoyerRequeteWithReqNum(socket, "", CMD_PRIVATE_NUM);
+	envoyerRequeteWithReqNum(socket, "", CMD_TALK_NUM);
 }
 
 static void traitementPrivate(int socket, requete_t req, users_t *users) {
@@ -86,11 +86,11 @@ static void traitementPrivate(int socket, requete_t req, users_t *users) {
 	}
 	// Vérifie que l'utilisateur est connecté
 	user_t receiver = retrieveUserByName(users, name);
-	if (usersCompare(receiver, NULL_USER)){
+	if (!usersCompare(receiver, NULL_USER)){
 		envoyerRequeteWithReqNum(socket, "CMD_ERROR_USER_DISCONNECTED", CMD_ERROR_USER_DISCONNECTED);
 		return;
 	}
-	if(updateUserSocket(users, socket, receiver.socket)) { // Impossible de mettre à jour l'utilisateur
+	if(!updateUserSocket(users, socket, receiver.socket)) { // Impossible de mettre à jour l'utilisateur
 		envoyerRequeteWithReqNum(socket, "CMD_ERROR_UNKNOW_ERROR", CMD_ERROR_UNKNOW_ERROR);
 		return;
 	}
