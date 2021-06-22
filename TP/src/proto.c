@@ -66,7 +66,7 @@ static void traitementList(int socket, users_t *users, int user_id) {
 }
 
 static void traitementTalk(int socket, users_t *users, int user_id) {
-	if(!updateUserSocket(users, socket, EVERYONE_DESTIONATION_SOCKET)) {  // Impossible de mettre à jour l'utilisateur
+	if(!updateUserSocket(users, socket, EVERYONE_DESTIONATION_ID)) {  // Impossible de mettre à jour l'utilisateur
 		envoyerRequeteWithReqNum(socket, "CMD_ERROR_UNKNOW_ERROR", CMD_ERROR_UNKNOW_ERROR);
 		return;
 	}
@@ -186,7 +186,7 @@ void dialClt2srv(int socketAppel) {
 	pthread_create(&thread_id_SND, NULL, dialClt2SND,(void *) &socketAppel);
 	pthread_join(thread_id_RCV, NULL);
 
-	
+
 }
 
 void creerProcService(int sockEcoute, int sockDial, int shmId, int user_id) {

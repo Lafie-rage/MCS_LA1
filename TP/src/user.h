@@ -12,9 +12,9 @@
 #define MAX_USER 10
 
 /**
- *	\def	EVERYONE_DESTIONATION_SOCKET	Socket associé à l'envoie de message à tous les utilisateurs connectés
+ *	\def	EVERYONE_DESTIONATION_ID	Socket associé à l'envoie de message à tous les utilisateurs connectés
  */
-#define EVERYONE_DESTIONATION_SOCKET 0
+#define EVERYONE_DESTIONATION_ID 0
 #define NOT_USE_SOCKET 0
 
 #define PATTERN_USER_TO_STRING "\t%s\n"
@@ -26,7 +26,7 @@ typedef struct User {
    int id;
    char name[MAX_SIZE_NAME];  /**< Nom de l'utilsateur#name */
    int  socket;               /**< Socket de dialogue avec l'utilsateur#socket */
-   int  destinationSocket;    /**< Socket de destination des messages de l'utilisateur. Si le socket vaut \sa EVERYONE_DESTIONATION_SOCKET ça signifie que le message est à envoyé à tout le monde#destiantionSocket */
+   int  destinationId;    /**< Id d'utilisateur destinationataire des messages de l'utilisateur. Si le socket vaut EVERYONE_DESTIONATION_ID ça signifie que le message est à envoyé à tout le monde#destiantionSocket */
 } user_t;
 /**
  *	\typedef	users_t Structure représentant une liste d'utilisateurs vue par le serveur
