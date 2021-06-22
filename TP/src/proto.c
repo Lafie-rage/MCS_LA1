@@ -155,18 +155,38 @@ void traitementMessage(int socketDial, requete_t req, users_t *users, int user_i
 	}
 }
 
-void dialClt2srv(int socketAppel) {
+void *dialClt2RCV(void *vargp){
+
+	int socketAppel = *((int *)vargp);
 	char buff[MAX_BUFF];
   requete_t req;
 	do {
 		memset(buff, 0, MAX_BUFF);
-		printf ("tapez votre message : \n"); fflush(stdout);
-		//scanf("%[^ ]\n", buff);
-		//gets(buff);
-		custom_read(buff,MAX_BUFF);
-		envoyerRequete(socketAppel, buff) ;
 		recevoirRequete(socketAppel, &req) ;
 	} while (req.reqNum != CMD_BYE_NUM) ;
+
+
+}
+void *dialClt2SND(void *vargp){
+	int socketAppel = *((int *)vargp);
+	char buff[MAX_BUFF];
+	while(1) {
+		memset(buff, 0, MAX_BUFF);
+		printf ("tapez votre message : \n");
+		custom_read(buff,MAX_BUFF);
+		envoyerRequete(socketAppel, buff) ;
+	}
+
+}
+
+
+void dialClt2srv(int socketAppel) {
+	pthread_t thread_id_RCV,thread_id_SND;
+	pthread_create(&thread_id_RCV, NULL, dialClt2RCV,(void *) &socketAppel);
+	pthread_create(&thread_id_SND, NULL, dialClt2SND,(void *) &socketAppel);
+	pthread_join(thread_id_RCV, NULL);
+
+	
 }
 
 void creerProcService(int sockEcoute, int sockDial, int shmId, int user_id) {

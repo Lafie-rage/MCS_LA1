@@ -9,6 +9,7 @@
 
 #include <sys/types.h>
 #include <sys/shm.h>
+#include <pthread.h>
 
 #include "data.h"
 #include "reqRep.h"

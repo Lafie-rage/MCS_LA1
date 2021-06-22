@@ -9,10 +9,10 @@ READ_LIB_FOLDER=$(SRC_FOLDER)read_lib/
 all : server client
 
 server: $(SRC_FOLDER)StreamCltSrv.c $(LIB_FOLDER)libmcs.a $(LIB_FOLDER)libread.a
-	$(CC) -DSERVER -o $@ $^
+	$(CC) -DSERVER -o $@ $^ -lpthread
 
 client: $(SRC_FOLDER)StreamCltSrv.c $(LIB_FOLDER)libmcs.a $(LIB_FOLDER)libread.a
-	$(CC) -DCLIENT -o $@ $^
+	$(CC) -DCLIENT -o $@ $^ -lpthread
 
 libs: $(LIB_FOLDER)libread.a $(LIB_FOLDER)libmcs.a
 
