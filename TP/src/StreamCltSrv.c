@@ -49,10 +49,10 @@ int main (__attribute__((unused)) int c, char **v) {
 }
 
 void serveur (char *adrIP, int port) {
-	int sockDial;
+	int sockDial, user_id = 0;
 	users_t *users2;
 	int shmId;
-	CHECK(shmId = shmget(ftok("/tmp",12345),sizeof(users_t), 0666| IPC_CREAT), " --- Problème création mémoire partagée --- ");
+	CHECK(shmId = shmget(ftok("/tmp",1234),sizeof(users_t), 0666| IPC_CREAT), " --- Problème création mémoire partagée --- ");
    	users2 = shmat(shmId, NULL, 0);
    	initUsers(users2);
 
@@ -63,8 +63,10 @@ void serveur (char *adrIP, int port) {
 	{
 		// Accepter une connexion
 		sockDial = accepterClt(sockEcoute);
+		// On incrémente l'identifiant 
+		user_id++;
 		// Lancer un processus de service pour le client connecté
-		creerProcService(sockEcoute, sockDial, shmId);
+		creerProcService(sockEcoute, sockDial, shmId, user_id);
 		// SEUL LE SERVEUR execute la suite du code !
 		// Fermer la socket de dialogue utilisé par le processus de service, elle est inutile pour le serveur
 		CHECK(close(sockDial),"-- PB close() --");

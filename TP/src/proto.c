@@ -13,7 +13,7 @@
 #include "read_lib/read_lib.h"
 
 
-void dialSrv2Clt(int socketDial, users_t *users){
+void dialSrv2Clt(int socketDial, users_t *users, int user_id){
 	char buff[MAX_BUFF];
   	requete_t req;
 	do {
@@ -21,16 +21,16 @@ void dialSrv2Clt(int socketDial, users_t *users){
 		recevoirRequete(socketDial, &req);
 
     if(req.reqNum > 0) // commands
-      traitementCommandes(socketDial, req, users);
+      traitementCommandes(socketDial, req, users, user_id);
     else // Messages
-      traitementMessage(socketDial, req, users);
+      traitementMessage(socketDial, req, users, user_id);
 
     //envoyerRequete(socketDial, "OK");
 
 	} while (strcmp(buff,"/bye")!=0);
 }
 
-static void traitementLogin(int socket, requete_t req, users_t *users) {
+static void traitementLogin(int socket, requete_t req, users_t *users, int user_id) {
 	char cmd[100];
 	char name[100];
 	strcpy(name, "");
@@ -51,7 +51,7 @@ static void traitementLogin(int socket, requete_t req, users_t *users) {
 		envoyerRequeteWithReqNum(socket, "CMD_ERROR_SERVER_FULL", CMD_ERROR_SERVER_FULL);
 	}
 	//ajoute l'user à la table
-	if (addUser(users, name, socket) == -1 ){
+	if (addUser(users, name, socket, user_id) == -1 ){
 		envoyerRequeteWithReqNum(socket, "CMD_ERROR_UNKNOW_ERROR", CMD_ERROR_UNKNOW_ERROR); // logiquement impossible
 		return;
 	}
@@ -59,13 +59,13 @@ static void traitementLogin(int socket, requete_t req, users_t *users) {
 	envoyerRequeteWithReqNum(socket, name, CMD_LOGIN_NUM);
 }
 
-static void traitementList(int socket, users_t *users) {
+static void traitementList(int socket, users_t *users, int user_id) {
 	char stringListUser[23+(MAX_SIZE_NAME+2)*MAX_USER];
 	listUserToString(users,stringListUser);
 	envoyerRequeteWithReqNum(socket, stringListUser,CMD_LIST_NUM);
 }
 
-static void traitementTalk(int socket, users_t *users) {
+static void traitementTalk(int socket, users_t *users, int user_id) {
 	if(!updateUserSocket(users, socket, EVERYONE_DESTIONATION_SOCKET)) {  // Impossible de mettre à jour l'utilisateur
 		envoyerRequeteWithReqNum(socket, "CMD_ERROR_UNKNOW_ERROR", CMD_ERROR_UNKNOW_ERROR);
 		return;
@@ -74,7 +74,7 @@ static void traitementTalk(int socket, users_t *users) {
 	envoyerRequeteWithReqNum(socket, "", CMD_TALK_NUM);
 }
 
-static void traitementPrivate(int socket, requete_t req, users_t *users) {
+static void traitementPrivate(int socket, requete_t req, users_t *users, int user_id) {
 	char cmd[100];
 	char name[100];
 	strcpy(name, "");
@@ -98,29 +98,29 @@ static void traitementPrivate(int socket, requete_t req, users_t *users) {
 	envoyerRequeteWithReqNum(socket, receiver.name, CMD_PRIVATE_NUM);
 }
 
-static void traitementBye(int socket) {
+static void traitementBye(int socket, int user_id) {
 	envoyerRequeteWithReqNum(socket, "", CMD_BYE_NUM);
 }
 
-void traitementCommandes(int socketDial, requete_t req, users_t *users) {
+void traitementCommandes(int socketDial, requete_t req, users_t *users, int user_id) {
  		switch(req.reqNum){
  			case CMD_LOGIN_NUM :
- 				traitementLogin(socketDial, req, users);
+ 				traitementLogin(socketDial, req, users, user_id);
  				break;
  			case CMD_LIST_NUM :
-				traitementList(socketDial, users);
+				traitementList(socketDial, users, user_id);
  				break;
 
 			case CMD_TALK_NUM :
-				traitementTalk(socketDial, users);
+				traitementTalk(socketDial, users, user_id);
 				break;
 
 			case CMD_PRIVATE_NUM :
-				traitementPrivate(socketDial, req, users);
+				traitementPrivate(socketDial, req, users, user_id);
 				break;
 
 			case CMD_BYE_NUM :
-				traitementBye(socketDial);
+				traitementBye(socketDial, user_id);
 				break;
 
 			default : // Unknow cmd ou (si on traite unkown cmd, request error)
@@ -129,9 +129,9 @@ void traitementCommandes(int socketDial, requete_t req, users_t *users) {
  		}
 }
 
-void traitementMessage(int socketDial, requete_t req, users_t *users) {
+void traitementMessage(int socketDial, requete_t req, users_t *users, int user_id) {
 	// Retrieve sender by socketDial
-	user_t sender = retrieveUserBySocket(users, socketDial);
+	user_t sender = retrieveUserById(users, user_id);
 	// Retrieve message from request
 	buffer_t originalMessage;
 	buffer_t newMessage;
@@ -147,7 +147,7 @@ void traitementMessage(int socketDial, requete_t req, users_t *users) {
 	}
 	else { // Private message
 		// Formating request
-		user_t receiver = retrieveUserBySocket(users, sender.destinationSocket);
+		user_t receiver = retrieveUserById(users, sender.id);
 		sprintf(newMessage, "From %s to %s : %s", sender.name, receiver.name, originalMessage);
 		envoyerRequete(sender.socket, newMessage);
 		// Sending to both of them
@@ -169,7 +169,7 @@ void dialClt2srv(int socketAppel) {
 	} while (req.reqNum != CMD_BYE_NUM) ;
 }
 
-void creerProcService(int sockEcoute, int sockDial, int shmId) {
+void creerProcService(int sockEcoute, int sockDial, int shmId, int user_id) {
 	int pid;
 	// Créer un processus de service pour l'affecter au service du client connecté
 	CHECK(pid=fork(), "-- PB fork() --");
@@ -181,7 +181,7 @@ void creerProcService(int sockEcoute, int sockDial, int shmId) {
 		// aux requêtes de connexion
 		CHECK(close(sockEcoute),"-- PB close() --");
 		// Dialoguer avec le client
-		dialSrv2Clt(sockDial, users2);
+		dialSrv2Clt(sockDial, users2, user_id);
 		// Fermer la socket de dialogue
 		CHECK(close(sockDial),"-- PB close() --");
 		// Fin du processus de service

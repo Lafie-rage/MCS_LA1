@@ -23,6 +23,7 @@
  *	\typedef	user_t Structure représentant un utilisateur vu par le serveur
  */
 typedef struct User {
+   int id;
    char name[MAX_SIZE_NAME];  /**< Nom de l'utilsateur#name */
    int  socket;               /**< Socket de dialogue avec l'utilsateur#socket */
    int  destinationSocket;    /**< Socket de destination des messages de l'utilisateur. Si le socket vaut \sa EVERYONE_DESTIONATION_SOCKET ça signifie que le message est à envoyé à tout le monde#destiantionSocket */
@@ -46,13 +47,13 @@ extern const user_t NULL_USER;  /*! Returned on error by functions */
 void initUsers(users_t *users);
 
 /**
-*	\fn		   user_t retrieveUserBySocket(users_t users, int socket)
-*	\brief	 Renvoie l'utilisateur parmis la liste ayant le socket transmit en paramètre
+*	\fn		   user_t retrieveUserById(users_t users, int Id)
+*	\brief	 Renvoie l'utilisateur parmis la liste ayant l'Id transmit en paramètre
 *	\param	 users : Liste des utilisateurs connectés au serveur
 * \param	 socket : Le socket associé à l'utilisateur recherché
 *	\return  L'utilisateur recherché. Renvoie l'utilisateur "NULL_USER" en cas d'échec
 */
-user_t retrieveUserBySocket(const users_t *users, int socket);
+user_t retrieveUserById(const users_t *users, int Id);
 
 /**
 *	\fn		   user_t retrieveUserByName(const users_t *users, const char *name)
@@ -71,7 +72,7 @@ user_t retrieveUserByName(const users_t *users, const char *name);
 * \param   socket : Le socket de l'utilisateur à ajouter
 *	\return  1 si l'utilisateur a été ajouté. 0 Sinon.
 */
-int addUser(users_t *users, const char *name, int socket);
+int addUser(users_t *users, const char *name, int socket,  int user_id);
 
 /**
 *	\fn		   int updateUserSocket(users_t *users, int userSocket, int destinationSocket)

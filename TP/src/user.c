@@ -5,15 +5,16 @@
 #include <stdio.h>
 
 const user_t NULL_USER = { /*! Returned on error by functions */
+  -1,
   "NULL USER",
   -1,
   -1
 };
 
-user_t retrieveUserBySocket(const users_t *users, int socket) {
+user_t retrieveUserById(const users_t *users, int user_id) {
   puts("BY SOCKET");
   int i = 0;
-  while(users->userList[i].socket != socket && i < users->size) i++;
+  while(users->userList[i].id != user_id && i < users->size) i++;
   printf("i : %d, size : %d\n", i, users->size);
   if(i == users->size) return NULL_USER;
   printf("\ni : %d, \n\tname : %s\n", i-1, users->userList[i].name);
@@ -39,7 +40,7 @@ user_t retrieveUserByName(const users_t *users, const char *name){
 }
 
 
-int addUser(users_t *users, const char* name, int socket){
+int addUser(users_t *users, const char* name, int socket,  int user_id){
   puts("ADD");
   int i = 0;
 
@@ -50,6 +51,7 @@ int addUser(users_t *users, const char* name, int socket){
 	strcpy(users->userList[i].name,name);
 	users->userList[i].socket = socket;
 	users->userList[i].destinationSocket = EVERYONE_DESTIONATION_SOCKET;
+	users->userList[i].id = user_id;
 	users->size++;
 	return 0;
 }
