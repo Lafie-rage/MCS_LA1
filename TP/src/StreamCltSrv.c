@@ -63,13 +63,10 @@ void serveur (char *adrIP, int port) {
 	{
 		// Accepter une connexion
 		sockDial = accepterClt(sockEcoute);
-		// On incrémente l'identifiant 
+		// On incrémente l'identifiant
 		user_id++;
 		// Lancer un processus de service pour le client connecté
-		creerProcService(sockEcoute, sockDial, shmId, user_id);
-		// SEUL LE SERVEUR execute la suite du code !
-		// Fermer la socket de dialogue utilisé par le processus de service, elle est inutile pour le serveur
-		CHECK(close(sockDial),"-- PB close() --");
+		creerProcService(sockDial, shmId, user_id);
 	}
 	CHECK(close(sockEcoute),"-- PB close() --");
 }
@@ -80,8 +77,6 @@ void client (char *adrIP, int port) {
 	sockAppel = connecterClt2Srv (adrIP, port);
 	// Dialoguer avec le serveur
 	dialClt2srv(sockAppel);
-	// Fermer la socket d'appel
-	CHECK(close(sockAppel),"-- PB close() --");
 	//PAUSE("CLIENT-close()");
 }
 

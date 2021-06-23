@@ -14,43 +14,38 @@ const user_t NULL_USER = { /*! Returned on error by functions */
 void initUsers(users_t *users){
 	users->size = 0;
 	for (int i = 0; i < MAX_USER; ++i) {
-    users->userList[i].socket = NOT_USE_SOCKET;
+    users->userList[i].socket = UNUSED_SOCKET;
     strcpy(users->userList[i].name, "");
-    users->userList[i].destinationSocket = NOT_USE_SOCKET;
+    users->userList[i].destinationId = UNUSED_ID;
+    users->userList[i].id = UNUSED_ID;
   }
 }
 
-user_t retrieveUserById(const users_t *users, int user_id) {
-  puts("BY SOCKET");
+user_t retrieveUserById(const users_t *users, int userId) {
   int i = 0;
   for(i = 0; i < MAX_USER; i++) {
-    printf("\ni : %d, \n\tname : %s\n", i-1, users->userList[i].name);
-    if(users->userList[i].id == user_id) return users->userList[i];
+    if(users->userList[i].id == userId) return users->userList[i];
   }
   return NULL_USER;
 }
 
 user_t retrieveUserByName(const users_t *users, const char *name){
-  puts("BY NAME");
 	int i;
   for(i = 0; i < MAX_USER; i++) {
-    printf("\ni : %d, \n\tname : %s\n", i-1, users->userList[i].name);
     if(!strcmp(users->userList[i].name, name)) return users->userList[i];
   }
   return NULL_USER;
 }
 
 
-int addUser(users_t *users, const char* name, int socket,  int user_id){
-  puts("ADD");
+int addUser(users_t *users, const char* name, int socket,  int userId){
   int i;
-
   for(i = 0; i < MAX_USER; i++) {
-    printf("\ni : %d, \n\tname : %s\n", i-1, users->userList[i].name);
-    if(users->userList[i].socket == NOT_USE_SOCKET) {
+    if(users->userList[i].id == UNUSED_ID) {
       strcpy(users->userList[i].name,name);
       users->userList[i].socket = socket;
-      users->userList[i].destinationSocket = EVERYONE_DESTIONATION_SOCKET;
+      users->userList[i].destinationId = EVERYONE_DESTIONATION_ID;
+      users->userList[i].id = userId;
       users->size++;
       return 0;
     }
@@ -58,33 +53,36 @@ int addUser(users_t *users, const char* name, int socket,  int user_id){
   return -1;
 }
 
-int updateUserSocket(users_t *users, int userSocket, int destinationSocket) {
-  int i = 0;
-  while(users->userList[i].socket != userSocket && i < users->size) i++; // TODO : Transformer en for
-  printf("\ni : %d, \n\tname : %s\n", i, users->userList[i].name);
-  if(i == users->size) return 0;
-  users->userList[i].socket = destinationSocket;
-  return 1;
-}
-
-void listUserToString(const users_t *users, char *stringListUser){
-
-	char currentUser[MAX_SIZE_NAME+2];
-	strcpy(stringListUser,"Connected users :\n");
-	for (int i = 0; i < MAX_USER; ++i)
-	{
-		if(users->userList[i].socket != NOT_USE_SOCKET){
-			sprintf(currentUser,PATTERN_USER_TO_STRING,users->userList[i].name);
-			strcat(stringListUser,currentUser);
-		}
-	}
-
+int updateUserDestination(users_t *users, int userId, int destinationId) {
+  int i;
+  for(i = 0; i < MAX_USER; i++) {
+    if(users->userList[i].id == userId) {
+      users->userList[i].destinationId = destinationId;
+      return 1;
+    }
+  }
+  return 0;
 }
 
 int usersCompare(user_t user1, user_t user2) {
   if (user1.id != user2.id) return 1;
   if (strcmp(user1.name, user2.name) != 0) return 1;
   if (user1.socket != user2.socket) return 1;
-  if (user1.destinationSocket != user2.destinationSocket) return 1;
+  if (user1.destinationId != user2.destinationId) return 1;
+  return 0;
+}
+
+int removeUser(users_t *users, int userId) {
+  int i;
+  for (i = 0; i < MAX_USER; i++) {
+		if(users->userList[i].id == userId){
+      users->userList[i].socket = UNUSED_SOCKET;
+      strcpy(users->userList[i].name, "");
+      users->userList[i].destinationId = UNUSED_ID;
+      users->userList[i].id = UNUSED_ID;
+      users->size--;
+      return 1;
+		}
+	}
   return 0;
 }

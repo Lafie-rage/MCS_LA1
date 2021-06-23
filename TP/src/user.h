@@ -15,7 +15,8 @@
  *	\def	EVERYONE_DESTIONATION_ID	Socket associé à l'envoie de message à tous les utilisateurs connectés
  */
 #define EVERYONE_DESTIONATION_ID 0
-#define NOT_USE_SOCKET 0
+#define UNUSED_SOCKET 0
+#define UNUSED_ID 0
 
 #define PATTERN_USER_TO_STRING "\t%s\n"
 
@@ -28,6 +29,7 @@ typedef struct User {
    int  socket;               /**< Socket de dialogue avec l'utilsateur#socket */
    int  destinationId;    /**< Id d'utilisateur destinationataire des messages de l'utilisateur. Si le socket vaut EVERYONE_DESTIONATION_ID ça signifie que le message est à envoyé à tout le monde#destiantionSocket */
 } user_t;
+
 /**
  *	\typedef	users_t Structure représentant une liste d'utilisateurs vue par le serveur
  */
@@ -72,17 +74,17 @@ user_t retrieveUserByName(const users_t *users, const char *name);
 * \param   socket : Le socket de l'utilisateur à ajouter
 *	\return  1 si l'utilisateur a été ajouté. 0 Sinon.
 */
-int addUser(users_t *users, const char *name, int socket,  int user_id);
+int addUser(users_t *users, const char *name, int socket,  int userId);
 
 /**
-*	\fn		   int updateUserSocket(users_t *users, int userSocket, int destinationSocket)
+*	\fn		   int updateUserDestination(users_t *users, int userSocket, int destinationSocket)
 *	\brief	 Modifie le socket de destination d'un utilisateur
 *	\param	 users : Liste des utilisateurs connectés au serveur
 * \param   userSocket : Le socket associé à l'utilisateur qui doit être modifié
 * \param	 destinationSocket : Le nouveau socket de destination de l'utilisateur
 *	\return  1 si l'utilisateur a été modifié. 0 Sinon.
 */
-int updateUserSocket(users_t *users, int userSocket, int destinationSocket);
+int updateUserDestination(users_t *users, int userSocket, int destinationSocket);
 
 /**
 *	\fn		   int usersCompare(user_t user1, user_t user2)
@@ -93,6 +95,14 @@ int updateUserSocket(users_t *users, int userSocket, int destinationSocket);
 */
 int usersCompare(user_t user1, user_t user2);
 
-void listUserToString(const users_t *users, char *stringListUser);
+/**
+*	\fn		   int removeUser(users_t *users, int userId)
+*	\brief	 Retire un utilisateur de la liste des utilisateurs connectés.
+*	\param	 users : Liste des utilisateurs connectés au serveur
+* \param	 userId : L'id de l'utilsateur à retirer.
+*	\return  1 si l'utilisateur a été retiré, 0 sinon.
+*/
+int removeUser(users_t *users, int userId);
+
 
 #endif /* USER_H */
