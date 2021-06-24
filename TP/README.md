@@ -44,5 +44,5 @@ When you want to disconnect a client, you can use "/bye".
   
 ## Contributors
 
-[Lafie-rage](https://github.com/Lafie-rage)  
 [ElColeoptero](https://github.com/elColeoptero)
+[Lafie-rage](https://github.com/Lafie-rage)  
