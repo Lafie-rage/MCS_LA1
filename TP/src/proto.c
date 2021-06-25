@@ -105,10 +105,8 @@ static void *dialSrv2Clt(void *vargp) {
 static void *dialClt2RCV(void *vargp) {
 
 	int socketAppel = *((int *)vargp);
-	char buff[MAX_BUFF];
   requete_t req;
 	do {
-		memset(buff, 0, MAX_BUFF);
 		recevoirRequete(socketAppel, &req);
 	} while (req.reqNum != CMD_BYE_NUM);
 	pthread_exit(NULL);
@@ -165,8 +163,6 @@ static void traitementMessage(int socketDial, requete_t req, users_t *users, int
 	buffer_t originalMessage;
 	buffer_t newMessage;
 	strcpy(originalMessage, req.reqBuff);
-
-	printf("Dest id : %d\n", sender.destinationId);
 
 	if(sender.destinationId == EVERYONE_DESTIONATION_ID) { // everyone
 		// Formating request
@@ -278,7 +274,6 @@ static void traitementPrivate(int socket, requete_t req, users_t *users, int use
 	}
 	// Vérifie que l'utilisateur est connecté
 	user_t receiver = retrieveUserByName(users, name);
-	printf("Dest name : %s, Dest id : %d\n", name, receiver.id);
 	if (!usersCompare(receiver, NULL_USER)){
 		envoyerRequeteWithReqNum(socket, "CMD_ERROR_USER_DISCONNECTED_NUM", CMD_ERROR_USER_DISCONNECTED_NUM);
 		return;
@@ -287,8 +282,6 @@ static void traitementPrivate(int socket, requete_t req, users_t *users, int use
 		envoyerRequeteWithReqNum(socket, "CMD_ERROR_UNKNOW_ERROR_NUM", CMD_ERROR_UNKNOW_ERROR_NUM);
 		return;
 	}
-
-	printf("Dest id : %d\n", retrieveUserById(users, userId).destinationId);
 
 	envoyerRequeteWithReqNum(socket, receiver.name, CMD_PRIVATE_NUM);
 }

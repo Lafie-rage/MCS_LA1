@@ -16,7 +16,6 @@
 #include "proto.h"
 
 #define CHECK(sts, msg) if ((sts)==-1) {perror(msg); exit(-1);}
-#define PAUSE(msg)	printf("%s [Appuyez sur entrée pour continuer]", msg); getchar();
 #define MAX_BUFF 1024
 #define IP_ANY		"0.0.0.0"
 #define IP_LOOP		"127.0.0.1"
@@ -56,8 +55,6 @@ void serveur (char *adrIP, int port) {
    	users2 = shmat(shmId, NULL, 0);
    	initUsers(users2);
 
-	//struct sockaddr_in addrClt;	// adressage du client connecté
-
 	sockEcoute = creerSocketEcoute(adrIP, port);
 	while(1)	// daemon !
 	{
@@ -65,19 +62,15 @@ void serveur (char *adrIP, int port) {
 		sockDial = accepterClt(sockEcoute);
 		// On incrémente l'identifiant
 		user_id++;
-		// Lancer un processus de service pour le client connecté
 		creerProcService(sockDial, shmId, user_id);
 	}
 	CHECK(close(sockEcoute),"-- PB close() --");
 }
 void client (char *adrIP, int port) {
-	int sockAppel;				// socket d'appel
+	int sockAppel;
 
-	// Créer une connexion avec le serveur
 	sockAppel = connecterClt2Srv (adrIP, port);
-	// Dialoguer avec le serveur
 	dialClt2srv(sockAppel);
-	//PAUSE("CLIENT-close()");
 }
 
 void deroute (int sigNum) {
